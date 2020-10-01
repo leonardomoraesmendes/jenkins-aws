@@ -25,7 +25,7 @@ Projeto DEMO para live sobre Acelerando os Builds utilizando Jenkins e AWS
 
 - Chave ssh geradas
   ```
-  ssh-key-gen
+  ssh-keygen
   ls ~/.ssh/
   id_rsa id_rsa.pub
   ```

@@ -1,0 +1,59 @@
+pipeline {
+    agent {label 'master'}
+
+    options {
+        skipDefaultCheckout true
+    }
+
+    stages {
+        stage('Code Checkout') {
+            steps 
+                sh 'rm -rf *'
+
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [
+                        [name: "*/master"]
+                    ],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [
+                        [
+                            url: "https://github.com/leonardomoraesmendes/jenkins-aws.git",
+                        ]
+                    ]
+                ])
+            }
+        }
+
+        stage('terraform validate') {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins', keyFileVariable: 'KEY')]) {
+                    sh """
+                    cd  terraform-node
+                    cp \$(echo ${KEY}) ~/.ssh/id_rsa
+                    tfenv install
+                    terraform init
+                    terraform validate
+                    terraform plan
+                """
+                }
+            }
+        }
+        stage('terraform apply') {
+            input {
+                message "Criar o novo template do nodes do Jenkins?"
+                ok "Sim"
+            }
+            steps {
+                sh """
+                    cd  terraform-node
+                    terraform destroy -auto-approve 
+                    terraform apply -auto-approve
+                """
+            }
+        }
+
+    }
+}

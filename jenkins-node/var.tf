@@ -29,14 +29,14 @@ variable "KeyPrivate" {
 
 
 variable "vpc" {
-    default = "vpc-051a38e88cde01621"
+    default = ""
 }
 
 variable "subnet" {
-    default = "subnet-0830e49a56e719680"
+    default = ""
 }
 
 variable "securityGroups" {
    type = list
-   default = [ "sg-02aa9b8b1b219de80" ]
+   default = [ "" ]
 }

@@ -7,7 +7,7 @@ pipeline {
 
     stages {
         stage('Code Checkout') {
-            steps 
+            steps {
                 sh 'rm -rf *'
 
                 checkout([
@@ -26,21 +26,24 @@ pipeline {
                 ])
             }
         }
+        
 
         stage('terraform validate') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins', keyFileVariable: 'KEY')]) {
                     sh """
-                    cd  terraform-node
+                    cd  jenkins-node
+                    [ -d ~/.ssh ] || mkdir ~/.ssh
                     cp \$(echo ${KEY}) ~/.ssh/id_rsa
                     tfenv install
-                    terraform init
-                    terraform validate
-                    terraform plan
-                """
+                    terraform init -no-color
+                    terraform validate -no-color
+                    terraform plan -no-color
+                    """
                 }
             }
         }
+
         stage('terraform apply') {
             input {
                 message "Criar o novo template do nodes do Jenkins?"
@@ -48,12 +51,17 @@ pipeline {
             }
             steps {
                 sh """
-                    cd  terraform-node
-                    terraform destroy -auto-approve 
-                    terraform apply -auto-approve
+                    cd  jenkins-node
+                    terraform destroy -auto-approve -no-color
+                    terraform apply -auto-approve -no-color
                 """
             }
         }
-
+        
+        stage('CleanWorkspace') {
+            steps {
+                cleanWs()
+            }
+        }
     }
 }

@@ -30,24 +30,19 @@ resource "aws_iam_policy" "policy" {
    "Version":"2012-10-17",
    "Statement":[
       {
-         "Effect":"Allow",
-         "Action":[
-            "ec2:DescribeSpotFleetInstances",
-            "ec2:ModifySpotFleetRequest",
-            "ec2:CreateTags",
-            "ec2:DescribeRegions",
-            "ec2:DescribeInstances",
-            "ec2:TerminateInstances",
-            "ec2:DescribeInstanceStatus",
-            "ec2:DescribeSpotFleetRequests"
-         ],
-         "Resource":"*"
+         "Action": "ec2:*",
+         "Effect": "Allow",
+         "Resource": "*"
+      },
+      {
+         "Effect": "Allow",
+         "Action": "s3:*",
+         "Resource": "*"
       },
       {
          "Effect":"Allow",
          "Action":[
-            "autoscaling:DescribeAutoScalingGroups",
-            "autoscaling:UpdateAutoScalingGroup"
+            "autoscaling:*"
          ],
          "Resource":"*"
       },

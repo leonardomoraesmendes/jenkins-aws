@@ -6,7 +6,7 @@ resource "aws_key_pair" "localkey" {
 resource "aws_instance" "jenkins-lab" {
   ami                           = var.ami
   instance_type                 = var.itype
-  subnet_id                     =  var.subnet
+  subnet_id                     = var.subnet
   associate_public_ip_address   = "true"
   security_groups               = var.securityGroups
   key_name                      = aws_key_pair.localkey.key_name

@@ -24,7 +24,7 @@ EOF
 ## Policy for plugin EC2 Fleet
 ##
 resource "aws_iam_policy" "policy" {
-  name        = "ec2-fleet"
+  name        = "jenkins"
   policy      = <<EOF
 {
    "Version":"2012-10-17",

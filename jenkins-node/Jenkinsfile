@@ -13,7 +13,7 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     branches: [
-                        [name: "*/master"]
+                        [name: "*/live"]
                     ],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [],
